@@ -33,12 +33,6 @@ MIN_TRAIN_POINTS = 30
 def met_to_mjd(met):
     return 51910 + 7.428703703703703e-4 + np.asarray(met, dtype=float) / 86400.0
 
-# Convert julian dates for plotting
-def julian_convert(dates): 
-    return pd.to_datetime(dates+ 2400000.5, unit ='D', origin='julian').dt.strftime('%Y-%m-%d')
-
-
-
 def parse_raw(path):
     raw = json.loads(Path(path).read_text())
     rows = {}
