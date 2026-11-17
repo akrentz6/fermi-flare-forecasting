@@ -2,9 +2,6 @@
 
 Project for UCL Data Science Society Project Labs (2026/27).
 
-(The repository is named `fermi-source-classification` from an earlier idea. The
-project now forecasts flares.)
-
 ## Goal
 Predict when a gamma-ray source will become unusually bright (a flare), using
 time-series forecasting on Fermi-LAT light curves, and test whether a model works
