@@ -1,20 +1,32 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 from pathlib import Path
+import matplotlib.dates as mdates
 
-def lightcurve_plot(sel,df):    
-    src = sel.sort_values("n_kept").iloc[len(sel) // 2]["source"]
-    d = df[df["source"] == src]
+def lightcurve_plot(data):    
+    src = str(data['source'].iloc[0])
+    data = data.copy()
+    data["datetime"] = julian_convert(data["time_MJD"])
+    
     fig, ax = plt.subplots(figsize=(10, 4))
-    d["time_MJD"] = julian_convert(d["time_MJD"])
-    ax.errorbar(d["time_MJD"], d["flux_norm"], yerr=d["flux_error_norm"], fmt=".", ms=3, lw=0.5)
+    ax.errorbar(data["datetime"], data["flux_norm"], yerr=data["flux_error_norm"], fmt=".", ms=3, lw=0.5)
+    
     ax.axhline(1, color="grey", ls="--", lw=0.8)
-    ax.set_xlabel("MJD"); ax.set_ylabel("flux / quiescent flux"); ax.set_title(src)
+    ax.set_xlabel("Date") 
+    ax.set_ylabel("Flux / Quiescent Flux") 
+    ax.set_title(src)
+
+    ax.set_xlim(data['datetime'].min(),data['datetime'].max())
+    ax.xaxis.set_major_locator(mdates.YearLocator(1))
+    ax.tick_params(axis='x', rotation=45)
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+    
+    plt.tight_layout()
     plt.show()
 
 # Convert julian dates for plotting
 def julian_convert(dates): 
-    return pd.to_datetime(dates+ 2400000.5, unit ='D', origin='julian').dt.strftime('%Y-%m-%d')
+    return pd.to_datetime(dates+ 2400000.5, unit ='D', origin='julian')
 
 
 # extract a single lightcurve
@@ -27,4 +39,3 @@ def lightcurve_extract(source,out_path='source_file/',in_path='cleaned/cleaned_m
 
     return data.to_csv(out_path+str(source)+'.csv',index=False)
 
-lightcurve_extract('4FGL_J0001.5+2113')
