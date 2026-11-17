@@ -16,7 +16,7 @@ def lightcurve_plot(data):
     ax.set_ylabel("Flux / Quiescent Flux") 
     ax.set_title(src)
 
-    ax.set_xlim(data['datetime'].min(),data['datetime'].max())
+    ax.margins(x=0)
     ax.xaxis.set_major_locator(mdates.YearLocator(1))
     ax.tick_params(axis='x', rotation=45)
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
