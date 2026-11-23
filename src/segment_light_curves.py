@@ -14,6 +14,13 @@ COLUMNS = ["source", "method", "start_MJD", "end_MJD", "n_obs", "mean_flux",
            "flux_std", "fitted_flux", "slope_per_day", "state"]
 
 
+def read_observations(path):
+    columns = ["source", "time_MJD", "ts", "flux", "flux_error"]
+    df = pd.read_csv(path, usecols=columns)
+    df = df.replace([np.inf, -np.inf], np.nan).dropna(subset=columns[:-1])
+    return df[(df["ts"] >= 4) & (df["flux"] > 0)]
+
+
 def segment(method, time, flux, error, args):
     n = len(time)
     if method == "bayesian-blocks":
@@ -117,7 +124,9 @@ def main():
     ap.add_argument("input_csv", help="combined cleaned light curves")
     ap.add_argument("--mode", default="bayesian-blocks",
                     help="comma-separated methods (default: bayesian-blocks)")
-    ap.add_argument("--out", type=Path, default=Path("cleaned/segmentation"))
+    ap.add_argument("--out", type=Path,
+                    help="output directory (default: cleaned/segmentation, or its training subdirectory)")
+    ap.add_argument("--train-end-mjd", type=float, help="fit only observations before this MJD")
     ap.add_argument("--plots", type=int, default=0, help="maximum source PNGs (default: 0)")
     ap.add_argument("--dpi", type=int, default=300, help="PNG resolution (default: 300)")
     ap.add_argument("--limit", type=int, help="fit at most this many sources")
@@ -137,6 +146,8 @@ def main():
         ap.error("--plots and --limit must be nonnegative")
     if args.dpi < 1:
         ap.error("--dpi must be positive")
+    if args.train_end_mjd is not None and not np.isfinite(args.train_end_mjd):
+        ap.error("--train-end-mjd must be finite")
 
     mode_groups = {"all": METHODS, "pelt": [f"pelt-{cost}" for cost in PELT_FACTORS]}
     methods = {}
@@ -146,10 +157,14 @@ def main():
             ap.error(f"unknown mode {mode!r}. Choose from {', '.join([*METHODS, *mode_groups])}")
         methods.update(dict.fromkeys(mode_groups.get(mode, [mode])))
 
-    columns = ["source", "time_MJD", "ts", "flux", "flux_error"]
-    df = pd.read_csv(args.input_csv, usecols=columns)
-    df = df.replace([np.inf, -np.inf], np.nan).dropna()
-    detections = df[(df["ts"] >= 4) & (df["flux"] > 0) & (df["flux_error"] > 0)]
+    detections = read_observations(args.input_csv)
+    detections = detections[detections["flux_error"] > 0]
+    if args.out is None:
+        args.out = Path("cleaned/segmentation")
+        if args.train_end_mjd is not None:
+            args.out /= "training"
+    if args.train_end_mjd is not None:
+        detections = detections[detections["time_MJD"] < args.train_end_mjd]
 
     args.out.mkdir(parents=True, exist_ok=True)
     rows = {method: [] for method in methods}
@@ -180,6 +195,8 @@ def main():
     for method, method_rows in rows.items():
         result = pd.DataFrame(method_rows, columns=COLUMNS)
         result["state"] = result["state"].astype("Int64")
+        if args.train_end_mjd is not None:
+            result["train_end_MJD"] = args.train_end_mjd
         result.to_csv(args.out / f"segments_{method}.csv", index=False)
     print(f"Fitted {fitted} sources. Wrote {len(rows)} CSVs and "
           f"{min(fitted, args.plots)} PNGs to {args.out}.")
