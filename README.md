@@ -34,6 +34,8 @@ Python 3.13 with the packages in `requirements.txt`. Run from the repo root.
 4. Clean and normalise: `python src\clean_lcr.py data\raw data\processed`
 5. Summarise across sources:
    `python src\summarise_report.py data\processed\quality_report.csv`
+6. Segment the combined cleaned light curves:
+   `python src/segment_light_curves.py cleaned/cleaned_min300.csv --mode all --plots 10`
 
 ## Scripts
 | Script | Purpose |
@@ -42,6 +44,7 @@ Python 3.13 with the packages in `requirements.txt`. Run from the repo root.
 | `src/download_lcr.py` | Downloads raw light curves as JSON |
 | `src/clean_lcr.py` | Quality cuts, gap recording, normalisation, quality report |
 | `src/summarise_report.py` | Totals across sources from the quality report |
+| `src/segment_light_curves.py` | Per-source segmentation |
 | `src/probe_api.py` | Diagnostic: tests which name format and cadence the API accepts |
 
 ## Things to know
