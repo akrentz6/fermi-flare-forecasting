@@ -2,3 +2,5 @@ numpy
 pandas
 astropy
 matplotlib
+ruptures
+hmmlearn
