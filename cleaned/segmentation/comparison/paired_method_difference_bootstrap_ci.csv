@@ -1,0 +1,61 @@
+method_a,method_b,metric,difference_definition,n_paired_sources,median_paired_difference,ci_95_lower,ci_95_upper,bootstrap_replicates,random_seed
+Bayesian Blocks,PELT-linear,n_segments,method_a minus method_b,478,3.0,2.0,4.0,2000,42
+Bayesian Blocks,PELT-RBF,n_segments,method_a minus method_b,478,6.0,5.0,8.0,2000,42
+Bayesian Blocks,PELT-normal,n_segments,method_a minus method_b,478,0.0,0.0,1.0,2000,42
+Bayesian Blocks,Window,n_segments,method_a minus method_b,478,6.0,5.0,8.0,2000,42
+Bayesian Blocks,HMM,n_segments,method_a minus method_b,478,-17.0,-19.0125,-13.987500000000068,2000,42
+PELT-linear,PELT-RBF,n_segments,method_a minus method_b,478,3.0,2.0,3.0,2000,42
+PELT-linear,PELT-normal,n_segments,method_a minus method_b,478,-4.0,-5.0,-3.0,2000,42
+PELT-linear,Window,n_segments,method_a minus method_b,478,3.0,3.0,4.0,2000,42
+PELT-linear,HMM,n_segments,method_a minus method_b,478,-28.0,-31.0,-26.0,2000,42
+PELT-RBF,PELT-normal,n_segments,method_a minus method_b,478,-7.0,-8.0,-7.0,2000,42
+PELT-RBF,Window,n_segments,method_a minus method_b,478,0.0,0.0,0.0,2000,42
+PELT-RBF,HMM,n_segments,method_a minus method_b,478,-32.0,-36.0,-28.0,2000,42
+PELT-normal,Window,n_segments,method_a minus method_b,478,8.0,7.0,9.0,2000,42
+PELT-normal,HMM,n_segments,method_a minus method_b,478,-22.0,-26.0,-19.5,2000,42
+Window,HMM,n_segments,method_a minus method_b,478,-34.0,-37.0,-30.0,2000,42
+Bayesian Blocks,PELT-linear,median_segment_duration_days,method_a minus method_b,478,-69.0,-96.0,-50.625,2000,42
+Bayesian Blocks,PELT-RBF,median_segment_duration_days,method_a minus method_b,478,-1168.125,-1351.340625,-940.125,2000,42
+Bayesian Blocks,PELT-normal,median_segment_duration_days,method_a minus method_b,478,-79.125,-93.0,-63.0,2000,42
+Bayesian Blocks,Window,median_segment_duration_days,method_a minus method_b,478,-2034.375,-2769.975,-1503.75,2000,42
+Bayesian Blocks,HMM,median_segment_duration_days,method_a minus method_b,478,90.0,44.60625,183.0,2000,42
+PELT-linear,PELT-RBF,median_segment_duration_days,method_a minus method_b,478,-2054.25,-2546.625,-1531.5,2000,42
+PELT-linear,PELT-normal,median_segment_duration_days,method_a minus method_b,478,37.875,21.0,67.5,2000,42
+PELT-linear,Window,median_segment_duration_days,method_a minus method_b,478,-3034.5,-3235.55625,-2803.5,2000,42
+PELT-linear,HMM,median_segment_duration_days,method_a minus method_b,478,270.0,220.490625,322.5,2000,42
+PELT-RBF,PELT-normal,median_segment_duration_days,method_a minus method_b,478,2312.25,1797.75,2839.125,2000,42
+PELT-RBF,Window,median_segment_duration_days,method_a minus method_b,478,0.0,0.0,0.0,2000,42
+PELT-RBF,HMM,median_segment_duration_days,method_a minus method_b,478,2939.25,2184.0,3255.0,2000,42
+PELT-normal,Window,median_segment_duration_days,method_a minus method_b,478,-3132.375,-3258.796875,-2940.0,2000,42
+PELT-normal,HMM,median_segment_duration_days,method_a minus method_b,478,255.375,213.75,289.5,2000,42
+Window,HMM,median_segment_duration_days,method_a minus method_b,478,3295.5,3277.5,3646.5,2000,42
+Bayesian Blocks,PELT-linear,standardised_residual_rmse,method_a minus method_b,478,-0.22157494692865526,-0.2483631999499753,-0.19720262650390072,2000,42
+Bayesian Blocks,PELT-RBF,standardised_residual_rmse,method_a minus method_b,478,-0.35775526392479495,-0.4020603319007791,-0.3046200744753469,2000,42
+Bayesian Blocks,PELT-normal,standardised_residual_rmse,method_a minus method_b,478,-0.2405157900853841,-0.267101482663624,-0.20707339023078752,2000,42
+Bayesian Blocks,Window,standardised_residual_rmse,method_a minus method_b,478,-0.39331163724466456,-0.46233359377099326,-0.33275777764829056,2000,42
+Bayesian Blocks,HMM,standardised_residual_rmse,method_a minus method_b,478,-0.1297593078942158,-0.17222080311863203,-0.09694633269061115,2000,42
+PELT-linear,PELT-RBF,standardised_residual_rmse,method_a minus method_b,478,-0.0754103921744298,-0.0961777875440526,-0.05615272770630064,2000,42
+PELT-linear,PELT-normal,standardised_residual_rmse,method_a minus method_b,478,-0.003778289811527835,-0.007554940070653394,0.002149754887303808,2000,42
+PELT-linear,Window,standardised_residual_rmse,method_a minus method_b,478,-0.08888875351805275,-0.11046228707554939,-0.07024035714357368,2000,42
+PELT-linear,HMM,standardised_residual_rmse,method_a minus method_b,478,0.1417403336125565,0.11505854773043107,0.15551440532135713,2000,42
+PELT-RBF,PELT-normal,standardised_residual_rmse,method_a minus method_b,478,0.06002564414293299,0.04912558940315326,0.07164583441507956,2000,42
+PELT-RBF,Window,standardised_residual_rmse,method_a minus method_b,478,0.0,-0.002749927905064009,0.0,2000,42
+PELT-RBF,HMM,standardised_residual_rmse,method_a minus method_b,478,0.23434661830825004,0.21691541973873985,0.2554721258374748,2000,42
+PELT-normal,Window,standardised_residual_rmse,method_a minus method_b,478,-0.06999130178369528,-0.08992972751568562,-0.046647848413587045,2000,42
+PELT-normal,HMM,standardised_residual_rmse,method_a minus method_b,478,0.16160530800783224,0.13712490004469624,0.1784378401815117,2000,42
+Window,HMM,standardised_residual_rmse,method_a minus method_b,478,0.2899496777478913,0.2717430051334059,0.3042460564531419,2000,42
+Bayesian Blocks,PELT-linear,amplitude_retention,method_a minus method_b,478,-0.05061019328765021,-0.0648569596415692,-0.025116585815790238,2000,42
+Bayesian Blocks,PELT-RBF,amplitude_retention,method_a minus method_b,478,0.096446769478328,0.07105279690467237,0.11984349337017276,2000,42
+Bayesian Blocks,PELT-normal,amplitude_retention,method_a minus method_b,478,-0.08941406169952765,-0.11407349640846756,-0.06225251666015573,2000,42
+Bayesian Blocks,Window,amplitude_retention,method_a minus method_b,478,0.2007957592644343,0.1681932438655524,0.24161188145940926,2000,42
+Bayesian Blocks,HMM,amplitude_retention,method_a minus method_b,478,0.02447746289647673,0.0,0.07149060195087648,2000,42
+PELT-linear,PELT-RBF,amplitude_retention,method_a minus method_b,478,0.15471911912786296,0.1344723960736153,0.1731413667661633,2000,42
+PELT-linear,PELT-normal,amplitude_retention,method_a minus method_b,478,-0.034252346523100385,-0.05570942863074127,-0.012526567512196274,2000,42
+PELT-linear,Window,amplitude_retention,method_a minus method_b,478,0.24303842886632093,0.19619257615668653,0.27450621079748055,2000,42
+PELT-linear,HMM,amplitude_retention,method_a minus method_b,478,0.06352641288643687,0.026108916057143716,0.1044608163730701,2000,42
+PELT-RBF,PELT-normal,amplitude_retention,method_a minus method_b,478,-0.22794328182192694,-0.2575284222201682,-0.19498552006115955,2000,42
+PELT-RBF,Window,amplitude_retention,method_a minus method_b,478,0.0,0.0,0.0,2000,42
+PELT-RBF,HMM,amplitude_retention,method_a minus method_b,478,-0.1285977527855165,-0.18199481998531858,-0.07316176929327267,2000,42
+PELT-normal,Window,amplitude_retention,method_a minus method_b,478,0.33417817163843444,0.2967785430052724,0.37409115493230205,2000,42
+PELT-normal,HMM,amplitude_retention,method_a minus method_b,478,0.0845759923228886,0.04364281094781103,0.12881954649635452,2000,42
+Window,HMM,amplitude_retention,method_a minus method_b,478,-0.30085000871279777,-0.35856625482438664,-0.22481228023409197,2000,42

@@ -1,0 +1,397 @@
+FERMI LIGHT-CURVE SEGMENTATION COMPARISON
+============================================
+
+This report is descriptive; it does not identify a universally best method.
+Method summaries use one source-level row per method, so sources receive equal weight.
+Each method uses sources with a valid saved segmentation; paired comparisons use
+only sources available for both methods (reported as n_sources / n_paired_sources).
+
+PELT-linear reconstruction
+--------------------------------------------
+* segment_light_curves.py exports fitted_flux as the segment mean flux.
+* It estimates slope_per_day by OLS with an intercept.
+* Therefore fitted_flux is exact at the mean observation time in the segment.
+* Reconstruction: fitted_flux + slope_per_day * (time - mean_segment_observation_time).
+
+Time-based change-point tolerances (days): 3, 9, 30, 60
+Representative-plot gap threshold: 9 days
+Source-bootstrap replicates: 2000; random seed: 42
+
+METHOD SUMMARY (source-level medians, with Q25/Q75 columns in method_summary.csv)
+--------------------------------------------
+         method  n_sources  n_segments_median  n_change_points_median  median_segment_duration_days_median  standardised_residual_rmse_median  amplitude_retention_median  fit_coverage_median
+Bayesian Blocks        478                  9                       8                                207.8                             0.8799                      0.4648                    1
+    PELT-linear        478                  6                       5                                466.1                              1.145                      0.4681                    1
+       PELT-RBF        478                  2                       1                                 3280                              1.256                      0.2495                    1
+    PELT-normal        478                 10                       9                                353.2                              1.146                      0.5768                    1
+         Window        478                  2                       1                                 3328                              1.302                     0.07793                    1
+            HMM        478                 37                      36                                   39                              1.023                      0.5075                    1
+
+CHANGE-POINT AGREEMENT
+--------------------------------------------
+* Time-based F1 uses optimal one-to-one matching within the stated tolerance.
+* Gap-aware F1 additionally allows two boundaries inside the same observation-to-observation
+  interval to match, because their exact ordering within that unobserved interval is unresolved.
+* The time-based and gap-aware scores are both retained; neither replaces the other.
+* Both methods having no change points is assigned F1=1; only one method having boundaries
+  is assigned F1=0. Pairwise summary CSVs separately report these cases.
+* Event timing errors are conditional on matched events. The event-level CSV gives the
+  pooled distribution; source-level pairwise CSVs retain one row per source.
+* change_point_gap_diagnostics.csv records whether each boundary falls in a gap >9, >30, >90 days.
+
+RESIDUAL DEPENDENCE
+--------------------------------------------
+* Residual correlations use standardised residual pairs grouped by elapsed-time separation:
+  (0,9], (9,30], (30,90], and (90,180] days.
+* Correlations are calculated within each source and then summarised across sources.
+* This is a descriptive irregular-time pair-correlation diagnostic, not a conventional
+  equally-spaced sample ACF or a formal significance test.
+
+HMM STATE DIAGNOSTICS
+--------------------------------------------
+* State labels are retained from the saved HMM segment output; labels are ordered by
+  increasing fitted emission mean in the segmentation implementation.
+* Dwell times are measured in assigned observations and observed first-to-last calendar span.
+* Transition probabilities are empirical adjacent-observation transitions in the
+  decoded state sequence (including self-transitions), not the fitted GaussianHMM
+  transmat_ (that matrix is not exported by the segmentation CSV).
+* State-change rates per observed year are descriptive; the HMM transitions occur
+  per observation step, so they are not continuous-time transition intensities.
+
+BOOTSTRAP UNCERTAINTY
+--------------------------------------------
+* Confidence intervals resample sources, not individual observations.
+* Paired method differences are method_a minus method_b on sources available for both methods.
+* These intervals quantify source-to-source sampling uncertainty, not segmentation uncertainty.
+
+GENERAL CAVEATS
+--------------------------------------------
+* Calendar segment duration and first-to-last observed span are both reported;
+  they differ when segments contain long intervals without detections.
+* Segment counts and durations describe saved segmentations, not latent truth.
+* Residual diagnostics are evaluated only at cleaned detected observations.
+* Standardised residuals exclude missing/non-positive flux errors.
+* Pairwise fitted-curve distances compare predictions at common observed times.
+* High in-sample fit quality is not by itself evidence of good forecasting.
+* This comparison does not assess censored/non-detection bins or synthetic recovery.
+
+REPRESENTATIVE SOURCES
+--------------------------------------------
+selection  target_detection_count_quantile            source  n_detections
+      low                              0.1 4FGL_J0830.8+2410           332
+   median                              0.5 4FGL_J1304.3-4353           549
+     high                              0.9 4FGL_J0730.3-1141          1351
+
+CLOSEST FITTED-CURVE PAIRS (median source-level normalised RMSE)
+--------------------------------------------
+       method_a    method_b  n_sources  normalised_curve_rmse  normalised_curve_rmse_q25  normalised_curve_rmse_q75
+       PELT-RBF      Window        478                 0.1028                    0.03131                     0.1657
+    PELT-linear PELT-normal        478                 0.1546                     0.1108                     0.2114
+       PELT-RBF PELT-normal        478                 0.1639                     0.1164                     0.2337
+    PELT-normal      Window        478                 0.1806                      0.118                     0.2741
+Bayesian Blocks PELT-linear        478                 0.1931                     0.1613                     0.2496
+Bayesian Blocks PELT-normal        478                 0.1937                     0.1638                     0.2625
+    PELT-normal         HMM        478                 0.2002                     0.1759                     0.2721
+    PELT-linear    PELT-RBF        478                 0.2019                     0.1411                     0.2924
+       PELT-RBF         HMM        478                 0.2035                     0.1787                     0.2524
+    PELT-linear      Window        478                  0.212                     0.1446                     0.3174
+
+TOP TIME-BASED CHANGE-POINT AGREEMENT PAIRS (±3 days)
+--------------------------------------------
+       method_a    method_b  median_f1  median_f1_conditional_both_have_change_points  pct_sources_with_any_match  pct_sources_no_change_points_either  pct_sources_with_change_points_both
+Bayesian Blocks PELT-normal      0.263                                         0.2909                       71.13                                1.255                                83.89
+    PELT-linear PELT-normal        0.2                                            0.2                       68.83                               0.6276                                96.44
+    PELT-normal         HMM     0.1875                                         0.1881                        88.7                                    0                                98.74
+Bayesian Blocks PELT-linear     0.1818                                         0.2083                       65.06                                 2.51                                83.47
+Bayesian Blocks         HMM     0.1363                                         0.1978                        68.2                                    0                                83.89
+Bayesian Blocks    PELT-RBF     0.1127                                         0.1297                       49.16                                16.11                                62.34
+    PELT-linear         HMM        0.1                                         0.1021                       89.54                                    0                                97.07
+Bayesian Blocks      Window          0                                        0.05064                       29.29                                12.34                                49.79
+
+TOP GAP-AWARE CHANGE-POINT AGREEMENT PAIRS (±3 days)
+--------------------------------------------
+       method_a    method_b  gap_aware_median_f1  gap_aware_median_f1_conditional_both_have_change_points  pct_sources_gap_aware_with_any_match  pct_gap_aware_matches_same_gap_only
+Bayesian Blocks PELT-normal                0.263                                                   0.2909                                 71.13                                    0
+    PELT-linear PELT-normal                  0.2                                                      0.2                                 68.83                                    0
+    PELT-normal         HMM               0.1875                                                   0.1881                                  88.7                                    0
+Bayesian Blocks PELT-linear               0.1818                                                   0.2083                                 65.06                                    0
+Bayesian Blocks         HMM               0.1363                                                   0.1978                                  68.2                                    0
+Bayesian Blocks    PELT-RBF               0.1127                                                   0.1297                                 49.16                                    0
+    PELT-linear         HMM                  0.1                                                   0.1021                                 89.54                                    0
+Bayesian Blocks      Window                    0                                                  0.05064                                 29.29                                    0
+
+TOP TIME-BASED CHANGE-POINT AGREEMENT PAIRS (±9 days)
+--------------------------------------------
+       method_a    method_b  median_f1  median_f1_conditional_both_have_change_points  pct_sources_with_any_match  pct_sources_no_change_points_either  pct_sources_with_change_points_both
+Bayesian Blocks PELT-normal     0.3077                                         0.3529                       74.06                                1.255                                83.89
+    PELT-linear PELT-normal       0.25                                         0.2667                       73.85                               0.6276                                96.44
+    PELT-normal         HMM     0.2158                                         0.2195                       90.17                                    0                                98.74
+Bayesian Blocks PELT-linear     0.2076                                           0.25                       67.57                                 2.51                                83.47
+Bayesian Blocks         HMM     0.1818                                         0.2373                       70.29                                    0                                83.89
+Bayesian Blocks    PELT-RBF     0.1399                                         0.1538                       51.26                                16.11                                62.34
+    PELT-linear         HMM     0.1333                                         0.1367                       92.47                                    0                                97.07
+Bayesian Blocks      Window          0                                         0.0964                       33.89                                12.34                                49.79
+
+TOP GAP-AWARE CHANGE-POINT AGREEMENT PAIRS (±9 days)
+--------------------------------------------
+       method_a    method_b  gap_aware_median_f1  gap_aware_median_f1_conditional_both_have_change_points  pct_sources_gap_aware_with_any_match  pct_gap_aware_matches_same_gap_only
+Bayesian Blocks PELT-normal               0.3077                                                   0.3529                                 74.06                                    0
+    PELT-linear PELT-normal                 0.25                                                   0.2667                                 73.85                                    0
+    PELT-normal         HMM               0.2158                                                   0.2195                                 90.17                                    0
+Bayesian Blocks PELT-linear               0.2076                                                     0.25                                 67.57                                    0
+Bayesian Blocks         HMM               0.1818                                                   0.2373                                 70.29                                    0
+Bayesian Blocks    PELT-RBF               0.1399                                                   0.1538                                 51.26                                    0
+    PELT-linear         HMM               0.1333                                                   0.1367                                 92.47                                    0
+Bayesian Blocks      Window                    0                                                   0.0964                                 33.89                                    0
+
+TOP TIME-BASED CHANGE-POINT AGREEMENT PAIRS (±30 days)
+--------------------------------------------
+       method_a    method_b  median_f1  median_f1_conditional_both_have_change_points  pct_sources_with_any_match  pct_sources_no_change_points_either  pct_sources_with_change_points_both
+    PELT-linear PELT-normal     0.4211                                         0.4286                       86.19                               0.6276                                96.44
+Bayesian Blocks PELT-normal     0.4103                                         0.4466                       75.31                                1.255                                83.89
+Bayesian Blocks PELT-linear     0.2857                                         0.3333                       69.67                                 2.51                                83.47
+    PELT-normal         HMM      0.272                                         0.2761                       94.14                                    0                                98.74
+Bayesian Blocks         HMM     0.2278                                         0.2985                       72.18                                    0                                83.89
+    PELT-linear         HMM     0.1988                                         0.2051                       95.82                                    0                                97.07
+Bayesian Blocks    PELT-RBF     0.1739                                          0.192                       55.02                                16.11                                62.34
+       PELT-RBF PELT-normal      0.125                                         0.2667                       51.88                                1.255                                62.34
+
+TOP GAP-AWARE CHANGE-POINT AGREEMENT PAIRS (±30 days)
+--------------------------------------------
+       method_a    method_b  gap_aware_median_f1  gap_aware_median_f1_conditional_both_have_change_points  pct_sources_gap_aware_with_any_match  pct_gap_aware_matches_same_gap_only
+    PELT-linear PELT-normal               0.4211                                                   0.4286                                 86.19                                    0
+Bayesian Blocks PELT-normal               0.4103                                                   0.4466                                 75.31                                    0
+Bayesian Blocks PELT-linear               0.2857                                                   0.3333                                 69.67                                    0
+    PELT-normal         HMM                0.272                                                   0.2761                                 94.14                                    0
+Bayesian Blocks         HMM               0.2278                                                   0.2985                                 72.18                                    0
+    PELT-linear         HMM               0.1988                                                   0.2051                                 95.82                                    0
+Bayesian Blocks    PELT-RBF               0.1739                                                    0.192                                 55.02                                    0
+       PELT-RBF PELT-normal                0.125                                                   0.2667                                 51.88                                    0
+
+TOP TIME-BASED CHANGE-POINT AGREEMENT PAIRS (±60 days)
+--------------------------------------------
+       method_a    method_b  median_f1  median_f1_conditional_both_have_change_points  pct_sources_with_any_match  pct_sources_no_change_points_either  pct_sources_with_change_points_both
+    PELT-linear PELT-normal     0.4828                                         0.4878                       91.21                               0.6276                                96.44
+Bayesian Blocks PELT-normal     0.4712                                            0.5                       77.62                                1.255                                83.89
+Bayesian Blocks PELT-linear     0.3333                                         0.3714                       72.18                                 2.51                                83.47
+    PELT-normal         HMM     0.3101                                         0.3131                       96.65                                    0                                98.74
+Bayesian Blocks         HMM     0.2848                                         0.3415                       74.27                                    0                                83.89
+    PELT-linear         HMM     0.2363                                         0.2439                       96.23                                    0                                97.07
+Bayesian Blocks    PELT-RBF        0.2                                         0.2179                       56.07                                16.11                                62.34
+       PELT-RBF PELT-normal     0.1538                                         0.3077                       53.56                                1.255                                62.34
+
+TOP GAP-AWARE CHANGE-POINT AGREEMENT PAIRS (±60 days)
+--------------------------------------------
+       method_a    method_b  gap_aware_median_f1  gap_aware_median_f1_conditional_both_have_change_points  pct_sources_gap_aware_with_any_match  pct_gap_aware_matches_same_gap_only
+    PELT-linear PELT-normal               0.4828                                                   0.4878                                 91.21                                    0
+Bayesian Blocks PELT-normal               0.4712                                                      0.5                                 77.62                                    0
+Bayesian Blocks PELT-linear               0.3333                                                   0.3714                                 72.18                                    0
+    PELT-normal         HMM               0.3101                                                   0.3131                                 96.65                                    0
+Bayesian Blocks         HMM               0.2848                                                   0.3415                                 74.27                                    0
+    PELT-linear         HMM               0.2363                                                   0.2439                                 96.23                                    0
+Bayesian Blocks    PELT-RBF                  0.2                                                   0.2179                                 56.07                                    0
+       PELT-RBF PELT-normal               0.1538                                                   0.3077                                 53.56                                    0
+
+CHANGE-POINT LOCATION RELATIVE TO OBSERVATIONAL GAPS
+--------------------------------------------
+         method  n_change_points  pct_change_points_between_observations  pct_change_points_in_gap_gt_9_days  pct_change_points_in_gap_gt_30_days  pct_change_points_in_gap_gt_90_days  median_gap_length_days_when_boundary_in_gap  p90_gap_length_days_when_boundary_in_gap
+Bayesian Blocks            10593                                     100                               4.324                               0.7647                               0.1416                                            3                                         6
+    PELT-linear             2604                                     100                               15.36                                3.533                                0.384                                            3                                        15
+       PELT-RBF             1104                                     100                               8.152                                1.087                              0.09058                                            3                                         9
+    PELT-normal             5571                                     100                               16.03                                4.146                               0.5206                                            3                                        18
+         Window              624                                     100                               12.98                                4.006                               0.4808                                            3                                        15
+            HMM            23309                                     100                               24.48                                5.727                               0.5706                                            3                                        24
+
+EVENT-LEVEL MATCHED CHANGE-POINT TIMING ERRORS
+--------------------------------------------
+ matching_mode  tolerance_days        method_a    method_b  n_matched_events  median_error_days  mean_error_days  p90_error_days  max_error_days  pct_matches_same_gap_only
+     gap_aware               3 Bayesian Blocks         HMM              3076                  0           0.4886               3               3                          0
+     gap_aware               3 Bayesian Blocks    PELT-RBF               696                  0           0.4181               3               3                          0
+     gap_aware               3 Bayesian Blocks PELT-linear              1230                  0           0.4098               3               3                          0
+     gap_aware               3 Bayesian Blocks PELT-normal              2502                  0           0.5072               3               3                          0
+     gap_aware               3 Bayesian Blocks      Window               262                  0           0.7672               3               3                          0
+     gap_aware               3        PELT-RBF         HMM               454                  0           0.5154               3               3                          0
+     gap_aware               3        PELT-RBF PELT-normal               628                  0            0.301             0.9               3                          0
+     gap_aware               3        PELT-RBF      Window               105                  0           0.6286               3               3                          0
+     gap_aware               3     PELT-linear         HMM              1021                  0           0.4701               3               3                          0
+     gap_aware               3     PELT-linear    PELT-RBF               211                  0           0.6114               3               3                          0
+     gap_aware               3     PELT-linear PELT-normal               873                  0            0.567               3               3                          0
+     gap_aware               3     PELT-linear      Window               165                  0           0.7091               3               3                          0
+     gap_aware               3     PELT-normal         HMM              2246                  0           0.4381               3               3                          0
+     gap_aware               3     PELT-normal      Window               252                  0           0.5357               3               3                          0
+     gap_aware               3          Window         HMM               246                  0           0.4512               3               3                          0
+     gap_aware               9 Bayesian Blocks         HMM              3682                  0            1.569               6               9                          0
+     gap_aware               9 Bayesian Blocks    PELT-RBF               800                  0            1.279               6               9                          0
+     gap_aware               9 Bayesian Blocks PELT-linear              1389                  0            1.161               6               9                          0
+     gap_aware               9 Bayesian Blocks PELT-normal              2935                  0            1.462               6               9                          0
+     gap_aware               9 Bayesian Blocks      Window               341                  0            2.243             7.5               9                          0
+     gap_aware               9        PELT-RBF         HMM               567                  0            1.815               6               9                          0
+     gap_aware               9        PELT-RBF PELT-normal               717                  0            1.111               6               9                          0
+     gap_aware               9        PELT-RBF      Window               134                  0            2.015               6               9                          0
+     gap_aware               9     PELT-linear         HMM              1283                  0            1.758               6               9                          0
+     gap_aware               9     PELT-linear    PELT-RBF               268                  0            1.897               6               9                          0
+     gap_aware               9     PELT-linear PELT-normal              1139                  0            2.116             7.5               9                          0
+     gap_aware               9     PELT-linear      Window               237                  0            2.639               9               9                          0
+     gap_aware               9     PELT-normal         HMM              2660                  0            1.456               6               9                          0
+     gap_aware               9     PELT-normal      Window               324                  0            1.986               6               9                          0
+     gap_aware               9          Window         HMM               314                  0            1.892            7.05               9                          0
+     gap_aware              30 Bayesian Blocks         HMM              4436                  0            4.777            16.5              30                          0
+     gap_aware              30 Bayesian Blocks    PELT-RBF               959                  0            4.068              15              30                          0
+     gap_aware              30 Bayesian Blocks PELT-linear              1735                  0            4.603              18              30                          0
+     gap_aware              30 Bayesian Blocks PELT-normal              3518                  0            4.249              15              30                          0
+     gap_aware              30 Bayesian Blocks      Window               453                  3            6.179              18              30                          0
+     gap_aware              30        PELT-RBF         HMM               719                  0            5.389              18              30                          0
+     gap_aware              30        PELT-RBF PELT-normal               886                  0              4.7            19.5              30                          0
+     gap_aware              30        PELT-RBF      Window               205                  3            7.902              24              30                          0
+     gap_aware              30     PELT-linear         HMM              1807                  3            6.778              21              30                          0
+     gap_aware              30     PELT-linear    PELT-RBF               409                  3             8.09              24              30                          0
+     gap_aware              30     PELT-linear PELT-normal              1704                  3            7.612              21              30                          0
+     gap_aware              30     PELT-linear      Window               393                  6            9.015              24              30                          0
+     gap_aware              30     PELT-normal         HMM              3355                  0            5.092              18              30                          0
+     gap_aware              30     PELT-normal      Window               483                  3            7.565            22.2              30                          0
+     gap_aware              30          Window         HMM               467                  3             7.23              21              30                          0
+     gap_aware              60 Bayesian Blocks         HMM              4869                  3            9.319              33              60                          0
+     gap_aware              60 Bayesian Blocks    PELT-RBF              1017                  0            6.372            21.6              60                          0
+     gap_aware              60 Bayesian Blocks PELT-linear              1893                  0            7.869              27              60                          0
+     gap_aware              60 Bayesian Blocks PELT-normal              3828                  0            7.507              27              60                          0
+     gap_aware              60 Bayesian Blocks      Window               493                  3            9.024              27              60                          0
+     gap_aware              60        PELT-RBF         HMM               806                  3             9.72              33              60                          0
+     gap_aware              60        PELT-RBF PELT-normal               962                  0            7.909              27              60                          0
+     gap_aware              60        PELT-RBF      Window               241                  6            13.38              39              60                          0
+     gap_aware              60     PELT-linear         HMM              2096                  6            12.41              39              60                          0
+     gap_aware              60     PELT-linear    PELT-RBF               503                7.5            14.98            43.5              60                          0
+     gap_aware              60     PELT-linear PELT-normal              1955                  6            12.63            36.9              60                          0
+     gap_aware              60     PELT-linear      Window               465                  9            14.25              39              60                          0
+     gap_aware              60     PELT-normal         HMM              3756                  0            9.487              33              60                          0
+     gap_aware              60     PELT-normal      Window               526                  6            10.37              30              60                          0
+     gap_aware              60          Window         HMM               530                  6            11.21              33              60                          0
+time_tolerance               3 Bayesian Blocks         HMM              3076                  0           0.4886               3               3                          0
+time_tolerance               3 Bayesian Blocks    PELT-RBF               696                  0           0.4181               3               3                          0
+time_tolerance               3 Bayesian Blocks PELT-linear              1230                  0           0.4098               3               3                          0
+time_tolerance               3 Bayesian Blocks PELT-normal              2502                  0           0.5072               3               3                          0
+time_tolerance               3 Bayesian Blocks      Window               262                  0           0.7672               3               3                          0
+time_tolerance               3        PELT-RBF         HMM               454                  0           0.5154               3               3                          0
+time_tolerance               3        PELT-RBF PELT-normal               628                  0            0.301             0.9               3                          0
+time_tolerance               3        PELT-RBF      Window               105                  0           0.6286               3               3                          0
+time_tolerance               3     PELT-linear         HMM              1021                  0           0.4701               3               3                          0
+time_tolerance               3     PELT-linear    PELT-RBF               211                  0           0.6114               3               3                          0
+time_tolerance               3     PELT-linear PELT-normal               873                  0            0.567               3               3                          0
+time_tolerance               3     PELT-linear      Window               165                  0           0.7091               3               3                          0
+time_tolerance               3     PELT-normal         HMM              2246                  0           0.4381               3               3                          0
+time_tolerance               3     PELT-normal      Window               252                  0           0.5357               3               3                          0
+time_tolerance               3          Window         HMM               246                  0           0.4512               3               3                          0
+time_tolerance               9 Bayesian Blocks         HMM              3682                  0            1.569               6               9                          0
+time_tolerance               9 Bayesian Blocks    PELT-RBF               800                  0            1.279               6               9                          0
+time_tolerance               9 Bayesian Blocks PELT-linear              1389                  0            1.161               6               9                          0
+time_tolerance               9 Bayesian Blocks PELT-normal              2935                  0            1.462               6               9                          0
+time_tolerance               9 Bayesian Blocks      Window               341                  0            2.243             7.5               9                          0
+time_tolerance               9        PELT-RBF         HMM               567                  0            1.815               6               9                          0
+time_tolerance               9        PELT-RBF PELT-normal               717                  0            1.111               6               9                          0
+time_tolerance               9        PELT-RBF      Window               134                  0            2.015               6               9                          0
+time_tolerance               9     PELT-linear         HMM              1283                  0            1.758               6               9                          0
+time_tolerance               9     PELT-linear    PELT-RBF               268                  0            1.897               6               9                          0
+time_tolerance               9     PELT-linear PELT-normal              1139                  0            2.116             7.5               9                          0
+time_tolerance               9     PELT-linear      Window               237                  0            2.639               9               9                          0
+time_tolerance               9     PELT-normal         HMM              2660                  0            1.456               6               9                          0
+time_tolerance               9     PELT-normal      Window               324                  0            1.986               6               9                          0
+time_tolerance               9          Window         HMM               314                  0            1.892            7.05               9                          0
+time_tolerance              30 Bayesian Blocks         HMM              4436                  0            4.777            16.5              30                          0
+time_tolerance              30 Bayesian Blocks    PELT-RBF               959                  0            4.068              15              30                          0
+time_tolerance              30 Bayesian Blocks PELT-linear              1735                  0            4.603              18              30                          0
+time_tolerance              30 Bayesian Blocks PELT-normal              3518                  0            4.249              15              30                          0
+time_tolerance              30 Bayesian Blocks      Window               453                  3            6.179              18              30                          0
+time_tolerance              30        PELT-RBF         HMM               719                  0            5.389              18              30                          0
+time_tolerance              30        PELT-RBF PELT-normal               886                  0              4.7            19.5              30                          0
+time_tolerance              30        PELT-RBF      Window               205                  3            7.902              24              30                          0
+time_tolerance              30     PELT-linear         HMM              1807                  3            6.778              21              30                          0
+time_tolerance              30     PELT-linear    PELT-RBF               409                  3             8.09              24              30                          0
+time_tolerance              30     PELT-linear PELT-normal              1704                  3            7.612              21              30                          0
+time_tolerance              30     PELT-linear      Window               393                  6            9.015              24              30                          0
+time_tolerance              30     PELT-normal         HMM              3355                  0            5.092              18              30                          0
+time_tolerance              30     PELT-normal      Window               483                  3            7.565            22.2              30                          0
+time_tolerance              30          Window         HMM               467                  3             7.23              21              30                          0
+time_tolerance              60 Bayesian Blocks         HMM              4869                  3            9.319              33              60                          0
+time_tolerance              60 Bayesian Blocks    PELT-RBF              1017                  0            6.372            21.6              60                          0
+time_tolerance              60 Bayesian Blocks PELT-linear              1893                  0            7.869              27              60                          0
+time_tolerance              60 Bayesian Blocks PELT-normal              3828                  0            7.507              27              60                          0
+time_tolerance              60 Bayesian Blocks      Window               493                  3            9.024              27              60                          0
+time_tolerance              60        PELT-RBF         HMM               806                  3             9.72              33              60                          0
+time_tolerance              60        PELT-RBF PELT-normal               962                  0            7.909              27              60                          0
+time_tolerance              60        PELT-RBF      Window               241                  6            13.38              39              60                          0
+time_tolerance              60     PELT-linear         HMM              2096                  6            12.41              39              60                          0
+time_tolerance              60     PELT-linear    PELT-RBF               503                7.5            14.98            43.5              60                          0
+time_tolerance              60     PELT-linear PELT-normal              1955                  6            12.63            36.9              60                          0
+time_tolerance              60     PELT-linear      Window               465                  9            14.25              39              60                          0
+time_tolerance              60     PELT-normal         HMM              3756                  0            9.487              33              60                          0
+time_tolerance              60     PELT-normal      Window               526                  6            10.37              30              60                          0
+time_tolerance              60          Window         HMM               530                  6            11.21              33              60                          0
+
+ELAPSED-TIME RESIDUAL CORRELATION (source-level medians)
+--------------------------------------------
+         method   lag_bin  lag_lower_exclusive_days  lag_upper_inclusive_days  n_sources  median_correlation  q25_correlation  q75_correlation  median_n_residual_pairs
+Bayesian Blocks    (0, 9]                         0                         9        478              0.0739          0.02566           0.1143                      688
+Bayesian Blocks  (30, 90]                        30                        90        478           -0.004086         -0.01481          0.01525                     3866
+Bayesian Blocks   (9, 30]                         9                        30        478             0.00156         -0.02292          0.03114                     1472
+Bayesian Blocks (90, 180]                        90                       180        478           -0.001375        -0.009933          0.01118                     5294
+            HMM    (0, 9]                         0                         9        478              0.1829          0.09122           0.3166                      688
+            HMM  (30, 90]                        30                        90        478             0.02414         -0.00249          0.05932                     3866
+            HMM   (9, 30]                         9                        30        478             0.05235          0.01413            0.124                     1472
+            HMM (90, 180]                        90                       180        478             0.01846        -0.002015          0.04028                     5294
+       PELT-RBF    (0, 9]                         0                         9        478              0.3147           0.1934           0.4384                      688
+       PELT-RBF  (30, 90]                        30                        90        478             0.03193        -0.007136          0.07458                     3866
+       PELT-RBF   (9, 30]                         9                        30        478              0.1172           0.0523           0.1824                     1472
+       PELT-RBF (90, 180]                        90                       180        478            0.009191         -0.02129          0.04526                     5294
+    PELT-linear    (0, 9]                         0                         9        478              0.1652          0.09518           0.2957                      688
+    PELT-linear  (30, 90]                        30                        90        478            0.001494         -0.01832          0.02201                     3866
+    PELT-linear   (9, 30]                         9                        30        478             0.01738         -0.02128          0.06733                     1472
+    PELT-linear (90, 180]                        90                       180        478           -0.004049         -0.01792           0.0105                     5294
+    PELT-normal    (0, 9]                         0                         9        478              0.1699           0.1101           0.2512                      688
+    PELT-normal  (30, 90]                        30                        90        478           -0.005229         -0.02613          0.02009                     3866
+    PELT-normal   (9, 30]                         9                        30        478           0.0007558         -0.03314          0.05463                     1472
+    PELT-normal (90, 180]                        90                       180        478           -0.001527         -0.01441          0.01195                     5294
+         Window    (0, 9]                         0                         9        478               0.323           0.1884           0.5021                      688
+         Window  (30, 90]                        30                        90        478             0.06824          0.01978           0.1593                     3866
+         Window   (9, 30]                         9                        30        478              0.1268          0.04407           0.2848                     1472
+         Window (90, 180]                        90                       180        478             0.03508         0.005338          0.09181                     5294
+
+HMM DECODED-STATE SUMMARY (source-level medians)
+--------------------------------------------
+n_state_runs                             37
+n_state_changes                          36
+n_observation_state_transitions         550
+n_assigned_state_observations           551
+state_changes_per_100_observations    5.849
+state_changes_per_observed_year       1.975
+median_dwell_observations                 7
+median_dwell_observed_span_days       27.75
+n_states_observed                         2
+state_1_occupancy_fraction           0.8182
+state_2_occupancy_fraction           0.1818
+
+BOOTSTRAP MEDIAN CONFIDENCE INTERVALS
+--------------------------------------------
+         method                       metric  n_sources  median  ci_95_lower  ci_95_upper  bootstrap_replicates  random_seed
+Bayesian Blocks                   n_segments        478       9            7           10                  2000           42
+Bayesian Blocks median_segment_duration_days        478   207.8        134.2        302.2                  2000           42
+Bayesian Blocks   standardised_residual_rmse        478  0.8799       0.8626       0.8966                  2000           42
+Bayesian Blocks          amplitude_retention        478  0.4648       0.4104       0.5386                  2000           42
+    PELT-linear                   n_segments        478       6            5            6                  2000           42
+    PELT-linear median_segment_duration_days        478   466.1        399.8        536.3                  2000           42
+    PELT-linear   standardised_residual_rmse        478   1.145        1.073        1.198                  2000           42
+    PELT-linear          amplitude_retention        478  0.4681       0.4372       0.5064                  2000           42
+       PELT-RBF                   n_segments        478       2            2            3                  2000           42
+       PELT-RBF median_segment_duration_days        478    3280         2595         3320                  2000           42
+       PELT-RBF   standardised_residual_rmse        478   1.256        1.176        1.322                  2000           42
+       PELT-RBF          amplitude_retention        478  0.2495       0.2115       0.3121                  2000           42
+    PELT-normal                   n_segments        478      10            9           11                  2000           42
+    PELT-normal median_segment_duration_days        478   353.2        312.8        386.2                  2000           42
+    PELT-normal   standardised_residual_rmse        478   1.146        1.097        1.199                  2000           42
+    PELT-normal          amplitude_retention        478  0.5768       0.5441       0.6016                  2000           42
+         Window                   n_segments        478       2            1            2                  2000           42
+         Window median_segment_duration_days        478    3328         3321         6393                  2000           42
+         Window   standardised_residual_rmse        478   1.302         1.22        1.385                  2000           42
+         Window          amplitude_retention        478 0.07793            0       0.1269                  2000           42
+            HMM                   n_segments        478      37           33           40                  2000           42
+            HMM median_segment_duration_days        478      39           36           42                  2000           42
+            HMM   standardised_residual_rmse        478   1.023       0.9609        1.063                  2000           42
+            HMM          amplitude_retention        478  0.5075       0.4904       0.5225                  2000           42

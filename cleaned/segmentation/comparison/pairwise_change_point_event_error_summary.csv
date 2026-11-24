@@ -1,0 +1,121 @@
+matching_mode,tolerance_days,method_a,method_b,n_matched_events,median_error_days,mean_error_days,p90_error_days,max_error_days,pct_matches_same_gap_only
+gap_aware,3.0,Bayesian Blocks,HMM,3076,0.0,0.4886215864759428,3.0,3.0,0.0
+gap_aware,3.0,Bayesian Blocks,PELT-RBF,696,0.0,0.41810344827586204,3.0,3.0,0.0
+gap_aware,3.0,Bayesian Blocks,PELT-linear,1230,0.0,0.4097560975609756,3.0,3.0,0.0
+gap_aware,3.0,Bayesian Blocks,PELT-normal,2502,0.0,0.5071942446043165,3.0,3.0,0.0
+gap_aware,3.0,Bayesian Blocks,Window,262,0.0,0.767175572519084,3.0,3.0,0.0
+gap_aware,3.0,PELT-RBF,HMM,454,0.0,0.5154185022026432,3.0,3.0,0.0
+gap_aware,3.0,PELT-RBF,PELT-normal,628,0.0,0.30095541401273884,0.9000000000002046,3.0,0.0
+gap_aware,3.0,PELT-RBF,Window,105,0.0,0.6285714285714286,3.0,3.0,0.0
+gap_aware,3.0,PELT-linear,HMM,1021,0.0,0.4701273261508325,3.0,3.0,0.0
+gap_aware,3.0,PELT-linear,PELT-RBF,211,0.0,0.6113744075829384,3.0,3.0,0.0
+gap_aware,3.0,PELT-linear,PELT-normal,873,0.0,0.5670103092783505,3.0,3.0,0.0
+gap_aware,3.0,PELT-linear,Window,165,0.0,0.7090909090909091,3.0,3.0,0.0
+gap_aware,3.0,PELT-normal,HMM,2246,0.0,0.43811219946571683,3.0,3.0,0.0
+gap_aware,3.0,PELT-normal,Window,252,0.0,0.5357142857142857,3.0,3.0,0.0
+gap_aware,3.0,Window,HMM,246,0.0,0.45121951219512196,3.0,3.0,0.0
+gap_aware,9.0,Bayesian Blocks,HMM,3682,0.0,1.5692558392178164,6.0,9.0,0.0
+gap_aware,9.0,Bayesian Blocks,PELT-RBF,800,0.0,1.27875,6.0,9.0,0.0
+gap_aware,9.0,Bayesian Blocks,PELT-linear,1389,0.0,1.1609071274298055,6.0,9.0,0.0
+gap_aware,9.0,Bayesian Blocks,PELT-normal,2935,0.0,1.4616695059625213,6.0,9.0,0.0
+gap_aware,9.0,Bayesian Blocks,Window,341,0.0,2.2434017595307916,7.5,9.0,0.0
+gap_aware,9.0,PELT-RBF,HMM,567,0.0,1.8148148148148149,6.0,9.0,0.0
+gap_aware,9.0,PELT-RBF,PELT-normal,717,0.0,1.110878661087866,6.0,9.0,0.0
+gap_aware,9.0,PELT-RBF,Window,134,0.0,2.014925373134328,6.0,9.0,0.0
+gap_aware,9.0,PELT-linear,HMM,1283,0.0,1.7583787996882307,6.0,9.0,0.0
+gap_aware,9.0,PELT-linear,PELT-RBF,268,0.0,1.8973880597014925,6.0,9.0,0.0
+gap_aware,9.0,PELT-linear,PELT-normal,1139,0.0,2.116330114135206,7.5,9.0,0.0
+gap_aware,9.0,PELT-linear,Window,237,0.0,2.6392405063291138,9.0,9.0,0.0
+gap_aware,9.0,PELT-normal,HMM,2660,0.0,1.4560150375939849,6.0,9.0,0.0
+gap_aware,9.0,PELT-normal,Window,324,0.0,1.9861111111111112,6.0,9.0,0.0
+gap_aware,9.0,Window,HMM,314,0.0,1.89171974522293,7.049999999999983,9.0,0.0
+gap_aware,30.0,Bayesian Blocks,HMM,4436,0.0,4.776600541027953,16.5,30.0,0.0
+gap_aware,30.0,Bayesian Blocks,PELT-RBF,959,0.0,4.06830031282586,15.0,30.0,0.0
+gap_aware,30.0,Bayesian Blocks,PELT-linear,1735,0.0,4.602881844380404,18.0,30.0,0.0
+gap_aware,30.0,Bayesian Blocks,PELT-normal,3518,0.0,4.248862990335418,15.0,30.0,0.0
+gap_aware,30.0,Bayesian Blocks,Window,453,3.0,6.178807947019868,18.0,30.0,0.0
+gap_aware,30.0,PELT-RBF,HMM,719,0.0,5.388734353268428,18.0,30.0,0.0
+gap_aware,30.0,PELT-RBF,PELT-normal,886,0.0,4.699774266365688,19.5,30.0,0.0
+gap_aware,30.0,PELT-RBF,Window,205,3.0,7.902439024390244,24.0,30.0,0.0
+gap_aware,30.0,PELT-linear,HMM,1807,3.0,6.777808522412839,21.0,30.0,0.0
+gap_aware,30.0,PELT-linear,PELT-RBF,409,3.0,8.09046454767726,24.0,30.0,0.0
+gap_aware,30.0,PELT-linear,PELT-normal,1704,3.0,7.611795774647887,21.0,30.0,0.0
+gap_aware,30.0,PELT-linear,Window,393,6.0,9.01526717557252,24.0,30.0,0.0
+gap_aware,30.0,PELT-normal,HMM,3355,0.0,5.091952309985097,18.0,30.0,0.0
+gap_aware,30.0,PELT-normal,Window,483,3.0,7.565217391304348,22.200000000000017,30.0,0.0
+gap_aware,30.0,Window,HMM,467,3.0,7.230192719486081,21.0,30.0,0.0
+gap_aware,60.0,Bayesian Blocks,HMM,4869,3.0,9.319162045594577,33.0,60.0,0.0
+gap_aware,60.0,Bayesian Blocks,PELT-RBF,1017,0.0,6.371681415929204,21.599999999999966,60.0,0.0
+gap_aware,60.0,Bayesian Blocks,PELT-linear,1893,0.0,7.869255150554675,27.0,60.0,0.0
+gap_aware,60.0,Bayesian Blocks,PELT-normal,3828,0.0,7.506661442006269,27.0,60.0,0.0
+gap_aware,60.0,Bayesian Blocks,Window,493,3.0,9.024340770791076,27.0,60.0,0.0
+gap_aware,60.0,PELT-RBF,HMM,806,3.0,9.720223325062035,33.0,60.0,0.0
+gap_aware,60.0,PELT-RBF,PELT-normal,962,0.0,7.908523908523908,27.0,60.0,0.0
+gap_aware,60.0,PELT-RBF,Window,241,6.0,13.37551867219917,39.0,60.0,0.0
+gap_aware,60.0,PELT-linear,HMM,2096,6.0,12.412213740458014,39.0,60.0,0.0
+gap_aware,60.0,PELT-linear,PELT-RBF,503,7.5,14.979125248508947,43.5,60.0,0.0
+gap_aware,60.0,PELT-linear,PELT-normal,1955,6.0,12.63222506393862,36.900000000000205,60.0,0.0
+gap_aware,60.0,PELT-linear,Window,465,9.0,14.245161290322581,39.0,60.0,0.0
+gap_aware,60.0,PELT-normal,HMM,3756,0.0,9.487220447284345,33.0,60.0,0.0
+gap_aware,60.0,PELT-normal,Window,526,6.0,10.365969581749049,30.0,60.0,0.0
+gap_aware,60.0,Window,HMM,530,6.0,11.21320754716981,33.0,60.0,0.0
+time_tolerance,3.0,Bayesian Blocks,HMM,3076,0.0,0.4886215864759428,3.0,3.0,0.0
+time_tolerance,3.0,Bayesian Blocks,PELT-RBF,696,0.0,0.41810344827586204,3.0,3.0,0.0
+time_tolerance,3.0,Bayesian Blocks,PELT-linear,1230,0.0,0.4097560975609756,3.0,3.0,0.0
+time_tolerance,3.0,Bayesian Blocks,PELT-normal,2502,0.0,0.5071942446043165,3.0,3.0,0.0
+time_tolerance,3.0,Bayesian Blocks,Window,262,0.0,0.767175572519084,3.0,3.0,0.0
+time_tolerance,3.0,PELT-RBF,HMM,454,0.0,0.5154185022026432,3.0,3.0,0.0
+time_tolerance,3.0,PELT-RBF,PELT-normal,628,0.0,0.30095541401273884,0.9000000000002046,3.0,0.0
+time_tolerance,3.0,PELT-RBF,Window,105,0.0,0.6285714285714286,3.0,3.0,0.0
+time_tolerance,3.0,PELT-linear,HMM,1021,0.0,0.4701273261508325,3.0,3.0,0.0
+time_tolerance,3.0,PELT-linear,PELT-RBF,211,0.0,0.6113744075829384,3.0,3.0,0.0
+time_tolerance,3.0,PELT-linear,PELT-normal,873,0.0,0.5670103092783505,3.0,3.0,0.0
+time_tolerance,3.0,PELT-linear,Window,165,0.0,0.7090909090909091,3.0,3.0,0.0
+time_tolerance,3.0,PELT-normal,HMM,2246,0.0,0.43811219946571683,3.0,3.0,0.0
+time_tolerance,3.0,PELT-normal,Window,252,0.0,0.5357142857142857,3.0,3.0,0.0
+time_tolerance,3.0,Window,HMM,246,0.0,0.45121951219512196,3.0,3.0,0.0
+time_tolerance,9.0,Bayesian Blocks,HMM,3682,0.0,1.5692558392178164,6.0,9.0,0.0
+time_tolerance,9.0,Bayesian Blocks,PELT-RBF,800,0.0,1.27875,6.0,9.0,0.0
+time_tolerance,9.0,Bayesian Blocks,PELT-linear,1389,0.0,1.1609071274298055,6.0,9.0,0.0
+time_tolerance,9.0,Bayesian Blocks,PELT-normal,2935,0.0,1.4616695059625213,6.0,9.0,0.0
+time_tolerance,9.0,Bayesian Blocks,Window,341,0.0,2.2434017595307916,7.5,9.0,0.0
+time_tolerance,9.0,PELT-RBF,HMM,567,0.0,1.8148148148148149,6.0,9.0,0.0
+time_tolerance,9.0,PELT-RBF,PELT-normal,717,0.0,1.110878661087866,6.0,9.0,0.0
+time_tolerance,9.0,PELT-RBF,Window,134,0.0,2.014925373134328,6.0,9.0,0.0
+time_tolerance,9.0,PELT-linear,HMM,1283,0.0,1.7583787996882307,6.0,9.0,0.0
+time_tolerance,9.0,PELT-linear,PELT-RBF,268,0.0,1.8973880597014925,6.0,9.0,0.0
+time_tolerance,9.0,PELT-linear,PELT-normal,1139,0.0,2.116330114135206,7.5,9.0,0.0
+time_tolerance,9.0,PELT-linear,Window,237,0.0,2.6392405063291138,9.0,9.0,0.0
+time_tolerance,9.0,PELT-normal,HMM,2660,0.0,1.4560150375939849,6.0,9.0,0.0
+time_tolerance,9.0,PELT-normal,Window,324,0.0,1.9861111111111112,6.0,9.0,0.0
+time_tolerance,9.0,Window,HMM,314,0.0,1.89171974522293,7.049999999999983,9.0,0.0
+time_tolerance,30.0,Bayesian Blocks,HMM,4436,0.0,4.776600541027953,16.5,30.0,0.0
+time_tolerance,30.0,Bayesian Blocks,PELT-RBF,959,0.0,4.06830031282586,15.0,30.0,0.0
+time_tolerance,30.0,Bayesian Blocks,PELT-linear,1735,0.0,4.602881844380404,18.0,30.0,0.0
+time_tolerance,30.0,Bayesian Blocks,PELT-normal,3518,0.0,4.248862990335418,15.0,30.0,0.0
+time_tolerance,30.0,Bayesian Blocks,Window,453,3.0,6.178807947019868,18.0,30.0,0.0
+time_tolerance,30.0,PELT-RBF,HMM,719,0.0,5.388734353268428,18.0,30.0,0.0
+time_tolerance,30.0,PELT-RBF,PELT-normal,886,0.0,4.699774266365688,19.5,30.0,0.0
+time_tolerance,30.0,PELT-RBF,Window,205,3.0,7.902439024390244,24.0,30.0,0.0
+time_tolerance,30.0,PELT-linear,HMM,1807,3.0,6.777808522412839,21.0,30.0,0.0
+time_tolerance,30.0,PELT-linear,PELT-RBF,409,3.0,8.09046454767726,24.0,30.0,0.0
+time_tolerance,30.0,PELT-linear,PELT-normal,1704,3.0,7.611795774647887,21.0,30.0,0.0
+time_tolerance,30.0,PELT-linear,Window,393,6.0,9.01526717557252,24.0,30.0,0.0
+time_tolerance,30.0,PELT-normal,HMM,3355,0.0,5.091952309985097,18.0,30.0,0.0
+time_tolerance,30.0,PELT-normal,Window,483,3.0,7.565217391304348,22.200000000000017,30.0,0.0
+time_tolerance,30.0,Window,HMM,467,3.0,7.230192719486081,21.0,30.0,0.0
+time_tolerance,60.0,Bayesian Blocks,HMM,4869,3.0,9.319162045594577,33.0,60.0,0.0
+time_tolerance,60.0,Bayesian Blocks,PELT-RBF,1017,0.0,6.371681415929204,21.599999999999966,60.0,0.0
+time_tolerance,60.0,Bayesian Blocks,PELT-linear,1893,0.0,7.869255150554675,27.0,60.0,0.0
+time_tolerance,60.0,Bayesian Blocks,PELT-normal,3828,0.0,7.506661442006269,27.0,60.0,0.0
+time_tolerance,60.0,Bayesian Blocks,Window,493,3.0,9.024340770791076,27.0,60.0,0.0
+time_tolerance,60.0,PELT-RBF,HMM,806,3.0,9.720223325062035,33.0,60.0,0.0
+time_tolerance,60.0,PELT-RBF,PELT-normal,962,0.0,7.908523908523908,27.0,60.0,0.0
+time_tolerance,60.0,PELT-RBF,Window,241,6.0,13.37551867219917,39.0,60.0,0.0
+time_tolerance,60.0,PELT-linear,HMM,2096,6.0,12.412213740458014,39.0,60.0,0.0
+time_tolerance,60.0,PELT-linear,PELT-RBF,503,7.5,14.979125248508947,43.5,60.0,0.0
+time_tolerance,60.0,PELT-linear,PELT-normal,1955,6.0,12.63222506393862,36.900000000000205,60.0,0.0
+time_tolerance,60.0,PELT-linear,Window,465,9.0,14.245161290322581,39.0,60.0,0.0
+time_tolerance,60.0,PELT-normal,HMM,3756,0.0,9.487220447284345,33.0,60.0,0.0
+time_tolerance,60.0,PELT-normal,Window,526,6.0,10.365969581749049,30.0,60.0,0.0
+time_tolerance,60.0,Window,HMM,530,6.0,11.21320754716981,33.0,60.0,0.0

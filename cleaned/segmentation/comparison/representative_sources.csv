@@ -1,0 +1,4 @@
+selection,target_detection_count_quantile,source,n_detections
+low,0.1,4FGL_J0830.8+2410,332
+median,0.5,4FGL_J1304.3-4353,549
+high,0.9,4FGL_J0730.3-1141,1351
